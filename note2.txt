@@ -1,0 +1,157 @@
+package main
+
+import (
+	"fmt"
+)
+
+const i = 77
+
+// many const = enum
+const (
+	mot = 1
+	hai = "2"
+	ba  = 2
+)
+
+/*	iota
+const (
+	mot = iota
+	hai
+	ba
+	buon
+)
+result = 0, 1, 2, 3 (int32)
+*/
+
+// signed interger 8, 16, 32, 64
+// unsigned interger 8, 16, 32, 64
+// float 32, 64
+// complex 64, 128 ( float32+float32 = complex64 )
+
+func main() {
+
+	fmt.Printf("%v %v , %T, %T\n", i+mot, hai, i+mot, hai) // result = 80
+
+	// 0 0 0 0
+	// 8 4 2 1
+
+	var a int8 = 10 // 1010
+	var b int8 = 3  // 0011
+
+	fmt.Printf("%v ,%T\n", a&b, a&b)   // result = 0010
+	fmt.Printf("%v ,%T\n", a|b, a|b)   // result = 1011
+	fmt.Printf("%v ,%T\n", a^b, a^b)   // result = 1001
+	fmt.Printf("%v ,%T\n", a&^b, a&^b) // result = 1000
+
+	var x int8 = 11 // 1011
+	var y int8 = 3  // 0011
+
+	fmt.Printf("\n%v ,%T\n", x&y, x&y) // result = 0011
+	fmt.Printf("%v ,%T\n", x|y, x|y)   // result = 1011
+	fmt.Printf("%v ,%T\n", x^y, x^y)   // result = 1000
+	fmt.Printf("%v ,%T\n", x&^y, x&^y) // result = 1000
+
+	var i int8 = 10 // 1010
+	j := int8(4)    // 0100
+
+	fmt.Printf("\n%v ,%T\n", i&j, i&j) // result = 0000
+	fmt.Printf("%v ,%T\n", i|j, i|j)   // result = 1110
+	fmt.Printf("%v ,%T\n", i^j, i^j)   // result = 1110
+	fmt.Printf("%v ,%T\n", i&^j, i&^j) // result = 1010
+
+	var comp complex128 = 3 + 7i
+	//	var comp complex128 = complex(3,7)
+
+	fmt.Printf("\n%v ,%T\n", real(comp), real(comp)) // result = 3
+	fmt.Printf("%v ,%T\n", imag(comp), imag(comp))   // result = 7
+
+	// _ := "something" => ignore value
+
+	// ------------------------array----------------------------------------
+
+	points := [...]int{2, 3, 1, 5, 4}
+	var point [6]int
+	point[1] = 4
+	fmt.Printf("\n%v, %T\n", points, points) // result [2 3 1 5 4]
+	fmt.Printf("%v, %v\n", point, point[2])  // result [0 4 0 0 0 0], 0
+	fmt.Printf("%v\n", len(point))           // result 6
+
+	/*
+	   po:=&points => pointer
+	   po[2]=22
+	   fmt.Printf("\n%v, %T", points, points)	// result [2 3 22 5 4]
+	   fmt.Printf("\n%v", points)				// result &[2 3 22 5 4]
+	*/
+	aa := []int{1, 2, 4, 12, 20, 23, 53, 33} // slice > array
+	bb := aa[:]
+	cc := aa[3:]
+	dd := aa[:5]
+	ee := aa[3:6]
+	// ee[1] = 99
+	fmt.Printf("\na %v, %v, %v\n", aa, len(aa), cap(aa)) // result [1 2 4 12 20 23 53 33], 8, 8
+	fmt.Printf("b %v, %v, %v\n", bb, len(bb), cap(bb))
+	fmt.Printf("c %v, %v, %v\n", cc, len(cc), cap(cc)) // result [12 20 23 53 33], 5, 5													[12 99 23 53 33]
+	fmt.Printf("d %v, %v, %v\n", dd, len(dd), cap(dd)) // result [1 2 4 12 20], 5, 8													[1 2 4 12 99]
+	fmt.Printf("e %v, %v, %v\n", ee, len(ee), cap(ee)) // result [12 20 23],3 ,5		if uncomment ee[1] = 99 => 99 will replace 20 ==>[12 99 23]
+
+	// func make([]T, len, cap) []T, the capacity argument is usually omitted and defaults to the length
+	ff := make([]int, 0)
+	fmt.Printf("\n%v, %v, %v\n", aa, len(ff), cap(ff)) // result suppose to [0 0] but aa = ff => [1 2 4 12 20 23 53 33], 0, 0
+	ff = append(ff, 1)
+	fmt.Printf("%v, %v, %v\n", aa, len(ff), cap(ff)) // result [1 2 4 12 20 23 53 33], 1, 1
+	ff = append(ff, 3)
+	fmt.Printf("%v, %v, %v\n", aa, len(ff), cap(ff)) // result [1 2 4 12 20 23 53 33], 2, 2
+	// if ff = append(ff, 1, 1)
+	// result would be [1 2 4 12 20 23 53 33], 3, 4
+	ff = append(ff, 1)
+	fmt.Printf("%v, %v, %v\n", aa, len(ff), cap(ff)) // result [1 2 4 12 20 23 53 33], 3, 4
+	ff = append(ff, 1, 1, 3, 1, 2, 1)
+	fmt.Printf("%v, %v, %v\n", aa, len(ff), cap(ff)) // result [1 2 4 12 20 23 53 33], 9, 10
+	ff = append(ff, []int{2}...)                     // equal 	ff = append(ff, 1)
+	fmt.Printf("%v, %v, %v\n", aa, len(ff), cap(ff)) // result [1 2 4 12 20 23 53 33], 10, 10
+	// everytime slice increase more than double, the new capacity is set to the new length.
+
+	/*
+		a := []int{1, 2, 3, 4, 5, 6, 7}
+		b := append(a[:2], a[:5]...)
+		fmt.Printf(b) // result [1 2 1 2 3 4 5] [1 2 1 2 3 4 5]
+	*/
+
+	// ---------------------------map----------------------------------------
+	// NameAge := make(map[string]int)
+	NameAge := map[string]int{
+		"DD": 22,
+		"SM": 5,
+		"ST": 70,
+	}
+	NameAge["MS"] = 90
+	NameAge["DD"] = 88
+	delete(NameAge, "SM")
+	fmt.Println(NameAge) // result map[DD:88 MS:90 ST:70]
+
+	myArray := [3]string{"First", "Second", "Third"}
+
+	mySlice := myArray[:]
+	mySlice2 := myArray[:]
+
+	mySlice[0] = "test"
+
+	fmt.Println(mySlice2[0]) // result "test"
+
+	var data = map[string]map[string]map[string]string{}
+
+	data["Date_1"] = map[string]map[string]string{}
+	// data["Date_1"] = make(map[string]map[string]string, 0)
+	// data["Date_1"] = make(map[string]map[string]string, 0)
+
+	// data["Date_1"]["System"] = map[string]string{}
+	data["Date_1"]["System"] = make(map[string]string, 0)
+	data["Date_1"]["System"] = make(map[string]string, 0)
+
+	data["Date_1"]["System"]["command_1"] = "white"
+	// data["Date_1"]["System"]["command_2"] = "blue"
+	// data["Date_1"]["System"]["command_3"] = "red"
+
+	fmt.Println("\ndata: ", data)
+
+}

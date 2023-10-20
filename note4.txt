@@ -1,0 +1,263 @@
+// // Interface
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// ép kiểu dữ liệu
+// 	var i interface{} = "hello"
+
+// 	s := i.(string)
+// 	fmt.Println(s) // hello
+
+// 	s, ok := i.(string)
+// 	fmt.Println(s, ok) // hello true
+
+// 	f, ok := i.(float64)
+// 	fmt.Println(f, ok) // 0 false
+
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"math"
+// )
+
+// type geometry interface {
+// 	area() float64
+// 	perim() float64
+// }
+
+// type rect struct {
+// 	width, height float64
+// }
+// type circle struct {
+// 	radius float64
+// }
+
+// func (r rect) area() float64 {
+// 	return r.width * r.height
+// }
+// func (r rect) perim() float64 {
+// 	return 2*r.width + 2*r.height
+// }
+
+// func (c circle) area() float64 {
+// 	return math.Pi * c.radius * c.radius
+// }
+// func (c circle) perim() float64 {
+// 	return 2 * math.Pi * c.radius
+// }
+
+// func measure(g geometry) {
+// 	fmt.Println(g)
+// 	fmt.Println(g.area())
+// 	fmt.Println(g.perim())
+// }
+
+// func main() {
+// 	var a = rect{}
+// 	var b = circle{}
+
+// 	fmt.Printf("Input Width and Height\n")
+// 	fmt.Scanf("%v", &a.width)
+// 	fmt.Scanf("%v", &a.height)
+
+// 	fmt.Printf("Input Circle:")
+// 	fmt.Scanf("%v", &b.radius)
+
+// 	measure(a)
+// 	measure(b)
+
+// 	// r := rect{width: 3, height: 4}
+// 	// c := circle{radius: 5}
+// 	// measure(r)
+// 	// measure(c)
+// }
+
+//-----------------------------------------------------
+
+// // Tham trị và tham chiếu (value type và pointer type)
+// package main
+
+// import (
+// 	"fmt"
+// )
+
+// type Speaker interface {
+// 	Speak() string
+// }
+
+// type Foo struct{}
+
+// func (Foo) Speak() string {
+// 	return "Hello, I am Foo"
+// }
+
+// type Bar struct{}
+
+// func (*Bar) Speak() string {
+// 	return "Hello, I am Bar"
+// }
+
+// func main() {
+// 	var someSpeaker Speaker = Foo{}
+// 	fmt.Println(someSpeaker.Speak())
+
+// 	someSpeaker = &Foo{} // will be OK
+// 	fmt.Println(someSpeaker.Speak())
+
+// 	// someSpeaker = Bar{} // PANIC HERE
+// 	// fmt.Println(someSpeaker.Speak())
+// }
+
+//-----------------------------------------------------
+
+// Method on non-struct
+package main
+
+import (
+	"fmt"
+	"log"
+)
+
+type MyString string
+
+func (myStr MyString) reverse() string {
+	s := string(myStr)
+	runes := []rune(s)
+
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
+}
+
+func main() {
+	// m := MyString("")
+	// fmt.Printf("Enter string: ")
+	// fmt.Scanln(&m)
+	// fmt.Println(m.reverse())
+
+	/* opt2 (completed ver.)*/
+	m := MyString("")
+	fmt.Printf("Enter string:")
+	_, er := fmt.Scanln(&m)
+	if er != nil {
+		log.Fatal("Error occured!\n", er)
+	}
+	fmt.Printf("%v", m.reverse())
+}
+
+//-----------------------------------------------------
+
+// // pointer to pointer **
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var a = 7.98
+// 	var p = &a
+// 	var pp = &p
+
+// 	fmt.Println("a = ", a)
+// 	fmt.Println("address of a = ", &a)
+
+// 	fmt.Println("\np = ", p)
+// 	fmt.Println("address of p = ", &p)
+
+// 	fmt.Println("\npp = ", pp)
+// 	fmt.Println("address of p = ", &pp)
+// 	fmt.Println("*pp = ", *pp)
+// 	fmt.Println("**pp = ", **pp)
+// }
+
+//-----------------------------------------------------
+
+// /*
+// 	Goroutine là một hàm có thể chạy đồng thời với các hàm khác.
+// 	Goroutines là những luồng gọn nhẹ, được khởi tạo với chỉ 2KB trong stack size có thể tăng hoặc giảm vùng nhớ tùy yêu cầu sử dụng.
+//  Những ứng dụng Go có thể có rất nhiều Goroutines chạy đồng thời với nhau.
+// */
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	g1()
+// 	g2()
+// 	time.Sleep(time.Second)
+// }
+
+// func g1() {
+// 	for i := 1; i < 10; i++ {
+// 		go fmt.Println(i)
+// 	}
+// }
+
+//	func g2() {
+//		for i := 10; i < 20; i++ {
+//			go fmt.Println(i)
+//		}
+//	}
+
+//-----------------------------------------------------
+
+// // Capture variable Goroutine
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	/*
+// 	   	for i := 1; i <= 100; i++ {
+// 	   		go func() {
+// 	   			fmt.Println(i) // biến i ở đây là một pointer
+// 	   		}()
+// 	   	}
+// 	   Khi chạy đoạn code trên bạn sẽ phát hiện rất nhiều giá trị i bị trùng lặp.
+// 	   Đúng ra phải là các giá trị từ 1 đến 100 được in ra theo thứ tự ngẫu nhiên và không trùng.
+// 	   Nếu một hàm sử dụng biến ở ngoài nó thì biến đó sẽ được capture, hay có thể hiểu chỉ là một tham chiếu đến biến ở ngoài mà thôi, không phải giá trị.
+// 	   Vì các Goroutines không được thực thi ngay, dẫn đến giá trị i ở ngoài thay đổi thì khi thực thi nó sẽ in ra i đã bị thay đổi.
+// 	*/
+// 	for i := 1; i <= 30; i++ {
+// 		go func(somevalue int) {
+// 			fmt.Println(somevalue) // value ở đây độc lập với i ở ngoài
+// 		}(i) // value i được copy ở đây
+// 	}
+// 	time.Sleep(time.Second)
+// }
+
+// -----------------------------------------------------
+
+// // Channel
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	myChan := make(chan int)
+
+// 	go func() {
+// 		for i := 1; i <= 10; i++ {
+// 			myChan <- i
+// 			time.Sleep(time.Second)
+// 		}
+// 	}()
+
+// 	for i := 1; i <= 10; i++ {
+// 		fmt.Println(<-myChan)
+// 	}
+// }

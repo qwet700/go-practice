@@ -1,0 +1,134 @@
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type MySelf struct {
+	Name  string
+	Age   int
+	Male  bool
+	Hobby []string
+}
+
+type User struct {
+	Name  string `mytag:"MyName"` //tag
+	Email string `mytag:"MyEmail"`
+}
+
+func performOperations(a int, b int) (int, int) {
+	return a + b, a - b
+}
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) Speak() {
+	fmt.Println("Hello from " + p.Name)
+}
+
+func main() {
+	IAm := MySelf{
+		Name: "Trung",
+		Age:  23,
+		Male: true,
+		Hobby: []string{
+			"aaa",
+			"bbb",
+			"ccc",
+		},
+	}
+	/* opt 2:
+	IAm := MySelf{
+		"Trung",
+		23,
+		true,
+		[]string{
+			"aaa",
+			"bbb",
+			"ccc",
+	},
+	*/
+
+	/* opt3
+	IAm := MySelf{}
+	IAm.Name = "Trung"
+	IAm.Age = 23
+	IAm.Male = true
+	IAm.Hobby = []string{"aaa","bbb","ccc"}
+	*/
+
+	f := reflect.TypeOf(IAm)
+	Field, _ := f.FieldByName("Age")
+	fmt.Println(IAm)
+	fmt.Println(IAm.Name)
+	fmt.Println(Field)
+	// result {Age  int cant go over 100 16 [1] false}
+
+	/*
+		IAm := struct {
+			name string
+			age  int
+		}{name: "Trung", age: 23}
+		CopyIAm := IAm
+		CopyIAm.name = "something"
+		fmt.Println(IAm)
+		fmt.Println(CopyIAm)
+		// result {Trung 23}{something 23}
+	*/
+
+	//Ex2
+	u := User{"Bob", "bob@mycompany.com"}
+	t := reflect.TypeOf(u)
+	for _, fieldName := range []string{"Name", "Email"} {
+		field, found := t.FieldByName(fieldName)
+		if !found {
+			continue
+		}
+		fmt.Printf("\nField: User.%s\n", fieldName)
+		fmt.Printf("\tWhole tag value : %q\n", field.Tag)
+		fmt.Printf("\tValue of 'mytag': %q\n", field.Tag.Get("mytag"))
+	}
+	/* result
+		Field: User.Name
+		    Whole tag value : "mytag:\"MyName\""
+	        Value of 'mytag': "MyName"
+
+		Field: User.Email
+	        Whole tag value : "mytag:\"MyEmail\""
+	        Value of 'mytag': "MyEmail"
+	*/
+
+	var a, b int
+	fmt.Printf("\nEnter int a: ")
+	fmt.Scanf("%d", &a)
+	fmt.Printf("Enter int b: ")
+	fmt.Scanf("%d", &b)
+	sum, diff := performOperations(a, b)
+	fmt.Printf("Value func: %v, %v\n", sum, diff)
+
+	flavio := Person{Age: 39, Name: "Flavio"}
+	flavio.Speak()
+
+	var i interface{} = 1
+	switch i.(type) {
+	case int:
+		fmt.Printf("\nIs int")
+	case float64:
+		fmt.Printf("\nIs float64")
+	default:
+		fmt.Printf("\n???")
+	}
+
+	// input value map
+	for i := 0 ; i < 5 ; i++ {
+    var num int
+    var text string
+    fmt.Scanf("%d %s",&num,&text)
+    mapp[num] = text
+}
+
+}
