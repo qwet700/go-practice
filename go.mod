@@ -1,4 +1,4 @@
-module test1
+module go-practice
 
 go 1.21.1
 
