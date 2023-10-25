@@ -1,4 +1,4 @@
-module go-practice
+module github.com/qwet700/go-practice
 
 go 1.21.1
 
