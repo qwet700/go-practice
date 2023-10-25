@@ -10,6 +10,9 @@ import (
 	"net/http"
 	"strconv"
 
+
+
+
 	"github.com/gorilla/mux"
 
 )
@@ -97,3 +100,18 @@ var objects []Object
 }
 */
 package main
+
+import (
+	"github.com/gorilla/mux"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/qwet700/go-practice/pkg/routes"
+	"log"
+	"net/http"
+)
+
+func main() {
+	r := mux.NewRouter()
+	routes.ImpItem(r)
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe("localhost:3306", r))
+}
