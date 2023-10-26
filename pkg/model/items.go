@@ -43,7 +43,7 @@ func GetItembyID(id int64) *Item {
 // 	return &getItem, db
 // }
 
-func deleteItem(id int64) Item {
+func DeleteItem(id int64) Item {
 	var item Item
 	db.Where("ID=?", id).Delete(item)
 	return item
