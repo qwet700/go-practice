@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/qwet700/go-practice/pkg/model"
+	utils "github.com/qwet700/go-practice/pkg/utilities"
 )
 
 var newItem model.Item
@@ -50,7 +51,7 @@ func GetItemID(w http.ResponseWriter, r *http.Request) {
 
 func CreItem(w http.ResponseWriter, r *http.Request) {
 	CreateItem := &model.Item{}
-	utils.parseBody(r, CreateItem)
+	utils.ParseBody(r, CreateItem)
 	a := CreateItem.CreateItem()
 	res, _ := json.Marshal(a)
 	w.WriteHeader(http.StatusOK)
