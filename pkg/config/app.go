@@ -1,14 +1,14 @@
 package config
 
 import (
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 var db *gorm.DB // interact others db
 
 func Connect() {
-	a, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
+	a, err := gorm.Open("mysql", "root:root1@tcp(172.17.0.2:3306)/storage")
 	if err != nil {
 		panic(err)
 	}
