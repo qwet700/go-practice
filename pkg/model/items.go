@@ -31,11 +31,17 @@ func GetAllItems() []Item { // [] return a list of items
 	return Items
 }
 
-func GetItembyID(id int64) (*Item, *gorm.DB) { // return the item equal to id and all db
+func GetItembyID(id int64) *Item {
 	var getItem Item
-	db := db.Where("ID=?", id).Find(&getItem)
-	return &getItem, db
+	db.Where("ID=?", id).Find(&getItem)
+	return &getItem
 }
+
+// func GetItembyID(id int64) (*Item, *gorm.DB) { // return the item equal to id and all db
+// 	var getItem Item
+// 	db := db.Where("ID=?", id).Find(&getItem)
+// 	return &getItem, db
+// }
 
 func deleteItem(id int64) Item {
 	var item Item
