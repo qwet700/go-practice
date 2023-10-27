@@ -31,20 +31,20 @@ func GetAllItems() []Item { // [] return a list of items
 	return Items
 }
 
-func GetItembyID(id int64) *Item {
-	var getItem Item
-	db.Where("ID=?", id).Find(&getItem)
-	return &getItem
-}
-
 // func GetItembyID(id int64) (*Item, *gorm.DB) { // return the item equal to id and all db
 // 	var getItem Item
-// 	db := db.Where("ID=?", id).Find(&getItem)
+// 	db := db.Where("id=?", id).Find(&getItem) // "id=?" where id == routes {id}
 // 	return &getItem, db
 // }
 
+func GetItembyID(id int64) *Item {
+	var getItem Item
+	db.Where("id=?", id).Find(&getItem)
+	return &getItem
+}
+
 func DeleteItem(id int64) Item {
 	var item Item
-	db.Where("ID=?", id).Delete(item)
+	db.Where("id=?", id).Delete(item)
 	return item
 }

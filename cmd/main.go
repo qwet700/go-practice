@@ -14,6 +14,7 @@ import (
 
 
 
+
 	"github.com/gorilla/mux"
 
 )
@@ -104,7 +105,6 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/qwet700/go-practice/pkg/routes"
 	"log"
 	"net/http"

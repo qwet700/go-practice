@@ -24,7 +24,7 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 
 func GetItemID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	itemId := vars["itemId"]
+	itemId := vars["id"] // "id=" where id == routes {id}
 	ID, err := strconv.ParseInt(itemId, 0, 0)
 	if err != nil {
 		fmt.Println("error while parsing")
@@ -61,7 +61,7 @@ func CreItem(w http.ResponseWriter, r *http.Request) {
 
 func DelItemID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	itemId := vars["itemId"]
+	itemId := vars["id"]
 	ID, err := strconv.ParseInt(itemId, 0, 0)
 	if err != nil {
 		fmt.Println("error while parsing")
@@ -77,12 +77,13 @@ func UpdItemID(w http.ResponseWriter, r *http.Request) {
 	var updateitem = &model.Item{}
 	utils.ParseBody(r, updateitem)
 	vars := mux.Vars(r)
-	itemId := vars["itemId"]
+	itemId := vars["id"]
 	ID, err := strconv.ParseInt(itemId, 0, 0)
 	if err != nil {
 		fmt.Println("error while parsing")
 	}
-	itemDetails := model.GetItembyID(ID) // db, itemDetails := model.GetItembyID(ID)
+	//itemDetails := model.GetItembyID(ID)
+	itemDetails := model.GetItembyID(ID)
 	if updateitem.Name != "" {
 		itemDetails.Name = updateitem.Name
 	}
