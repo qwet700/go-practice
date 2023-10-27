@@ -68,7 +68,7 @@ func DelItemID(w http.ResponseWriter, r *http.Request) {
 	}
 	item := model.DeleteItem(ID)
 	res, _ := json.Marshal(item)
-	w.Header().Set("Content-Type", "pkglication/json")
+	w.Header().Set("Content-Type", "app/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
@@ -89,10 +89,10 @@ func UpdItemID(w http.ResponseWriter, r *http.Request) {
 	if updateitem.Sender != "" {
 		itemDetails.Sender = updateitem.Sender
 	}
-	db := config.Getdb()  //
-	db.Save(&itemDetails) //
+	db := config.Getdb() //
+	db.Save(&itemDetails)
 	res, _ := json.Marshal(itemDetails)
-	w.Header().Set("Content-Type", "pkglication/json")
+	w.Header().Set("Content-Type", "app/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }

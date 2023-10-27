@@ -13,6 +13,7 @@ import (
 
 
 
+
 	"github.com/gorilla/mux"
 
 )
@@ -113,5 +114,5 @@ func main() {
 	r := mux.NewRouter()
 	routes.ImpItem(r)
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe("localhost:3306", r))
+	log.Fatal(http.ListenAndServe("localhost:33060", r))
 }

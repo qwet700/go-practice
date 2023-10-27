@@ -10,7 +10,7 @@ var db *gorm.DB
 type Item struct {
 	gorm.Model
 	Name   string `gorm:""json:"name"`
-	Sender string `json:"author"`
+	Sender string `json:"sender"`
 }
 
 func init() {
